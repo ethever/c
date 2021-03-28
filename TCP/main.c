@@ -24,7 +24,7 @@ int main(){
 	// 	uint16_t sin_port: 16位TCP/UDP端口号
 	// 	struct in_addr sin_addr: 32位Ip地址
 	// 		In_addr_t s_addr: 32位Ipv4地址
-	// 	char sin_zero[8]: 不使用
+	// 	char sin_zero[8]: 不使用4
 	struct sockaddr_in serv_addr;
 	// 每个字节都用0填充
 	memset(&serv_addr, 0, sizeof(serv_addr));
@@ -35,7 +35,7 @@ int main(){
 	// 用于将点分十进制IP转换为IPv4的32位无符号整型IP
 	// 将无符号整型IP从主机端序转换为网络端字节序
 	// 最终返回网络端字节序的32位无符号整数IP
-	serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	serv_addr.sin_addr.s_addr = inet_addr("0.0.0.0");
 	// 端口
 	// htons: 将整型变量从主机字节序转变成网络字节序
 	// 即整数在地址空间上存储方式变为高位字节放在内存的低内存地址处
@@ -104,7 +104,8 @@ int main(){
 	int clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_addr, &clnt_addr_size);
 
 	// 向客户端发送数据
-	char str[] = "http://c.biancheng.net/socket/";
+	// char str[] = "GET / HTTP/1.1\r\nHost: 119.28.83.146\r\n\r\n hahahahhahah";
+	char str[] = "HTTP/1.1 200 OK\r\ncontent-type: text/html; charset=utf-8\r\n\r\nhahahahahaha";
 	write(clnt_sock, str, sizeof(str));
 
 	// 关闭套接字
@@ -112,6 +113,5 @@ int main(){
 	close(clnt_sock);
 	// 关闭服务端套接字
 	close(serv_sock);
-
 	return 0;
 }
